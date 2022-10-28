@@ -296,8 +296,8 @@ class SnowSave:
         import_json[local_save_file.stem] = import_json.pop(import_save_file.stem)
         
         #Rename all levels
-        import_slot = import_save_file.stem.removeprefix("CompleteSave")
-        local_slot = local_save_file.stem.removeprefix("CompleteSave")
+        import_slot = import_save_file.stem[12:]
+        local_slot = local_save_file.stem[12:]
 
         if import_slot != local_slot:
             if import_slot == '': #Just add slot
@@ -417,7 +417,7 @@ class SnowSave:
         else:
             raise ValueError("No save files found.")
 
-        sid = save_slot_name.removeprefix("CompleteSave")
+        sid = save_slot_name[12:]
         files_to_save = []
         for f in save_path.iterdir():
             if f.stem == save_slot_name or 'achievements' in f.name:
