@@ -3,8 +3,6 @@ name: Package Application with Pyinstaller
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
   build:
@@ -14,12 +12,22 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Package Application
+    - name: Package Windows Application
       uses: JackMcKew/pyinstaller-action-windows@main
       with:
         path: src
 
-    - uses: actions/upload-artifact@v2
+    - name: Package Linux Application
+      uses: JackMcKew/pyinstaller-action-linux@main
       with:
-        name: name-of-artifact
-        path: src/dist/windows
+        path: src
+
+    - uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        prerelease: true
+        title: "Development Build"
+        files: |
+          src/dist/windows/*
+          src/dist/linux/*
